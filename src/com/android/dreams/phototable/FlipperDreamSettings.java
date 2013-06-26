@@ -23,6 +23,8 @@ import android.view.View;
 import android.widget.ListAdapter;
 
 import java.util.LinkedList;
+import android.widget.Toast;
+import android.content.Context;
 
 /**
  * Settings panel for photo flipping dream.
@@ -43,6 +45,8 @@ public class FlipperDreamSettings extends ListActivity {
         mPhotoSource = new PhotoSourcePlexor(this, mSettings);
         setContentView(R.layout.settingslist);
 
+        final Context context = this;
+
         new AsyncTask<Void, Void, Void>() {
             @Override
             public Void doInBackground(Void... unused) {
@@ -59,6 +63,7 @@ public class FlipperDreamSettings extends ListActivity {
                setListAdapter(mAdapter);
                if (mAdapter.getCount() == 0) {
                    findViewById(android.R.id.empty).setVisibility(View.GONE);
+                   Toast.makeText(context, R.string.no_photo, Toast.LENGTH_LONG).show();                   
                }
            }
         }.execute();
