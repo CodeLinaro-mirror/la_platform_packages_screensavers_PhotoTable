@@ -76,6 +76,10 @@ public class FlipperDreamSettings extends ListActivity {
 
            @Override
            public void onPostExecute(Void unused) {
+               // if we encounter zero list items, then
+               // we should not show "SELECTALL"/"DESELECTALL"
+               // option
+               invalidateOptionsMenu();
                mAdapter.registerDataSetObserver(new DataSetObserver () {
                        @Override
                        public void onChanged() {
@@ -93,6 +97,16 @@ public class FlipperDreamSettings extends ListActivity {
            }
         };
         mLoadingTask.execute();
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        if (mAdapter != null && mAdapter.getCount() > 0) {
+            mSelectAll.setVisible(true);
+        } else {
+            mSelectAll.setVisible(false);
+        }
+        return true;
     }
 
     @Override
