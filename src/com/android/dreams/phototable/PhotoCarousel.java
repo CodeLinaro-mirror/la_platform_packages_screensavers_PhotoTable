@@ -60,6 +60,7 @@ public class PhotoCarousel extends FrameLayout {
     private int mLongSide;
     private int mShortSide;
     private long mLastFlipTime;
+    private boolean isAttachedToWindow = false;
 
     class Flipper implements Runnable {
         @Override
@@ -89,7 +90,9 @@ public class PhotoCarousel extends FrameLayout {
 
         private void scheduleNext(long delay) {
             removeCallbacks(mFlipper);
-            postDelayed(mFlipper, delay);
+            if(isAttachedToWindow){
+                postDelayed(mFlipper, delay);
+            }
         }
     }
 
@@ -271,7 +274,14 @@ public class PhotoCarousel extends FrameLayout {
         mPanel[0]= findViewById(R.id.front);
         mPanel[1] = findViewById(R.id.back);
         mSpinner = findViewById(R.id.spinner);
+        isAttachedToWindow = true;
         mFlipper.run();
+    }
+
+    @Override
+    public void onDetachedFromWindow(){
+        super.onDetachedFromWindow();
+        isAttachedToWindow = false;
     }
 
     @Override
